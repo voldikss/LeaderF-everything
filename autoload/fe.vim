@@ -84,9 +84,7 @@ function! s:On_Out_Or_Exit(filter, ...) abort
   endif
 
   " HACK!!!
-  if match($LANG, 'zh') > -1
-    let s:cache = iconv(s:cache, 'cp936', 'utf-8')
-  endif
+  let s:cache = iconv(s:cache, 'cp936', 'utf-8')
   if empty(s:cache)
     call fe#util#show_msg('No files found!', 'error')
     return
