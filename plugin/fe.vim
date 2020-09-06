@@ -20,7 +20,7 @@ let g:fe_openfile_filter = get(g:, 'fe_openfile_filter', ['txt', 'vim'])
 let g:fe_result_filter = get(g:, 'fe_result_filter', {'vim':1, 'txt':1, 'c':1, 'h':1, 'py':1})
 
 " Define es.exe option.
-let g:fe_es_options = get(g:, 'fe_es_option', '-s')
+let g:fe_es_options = get(g:, 'fe_es_options', '-s')
 
 " Define result window width
 let g:fe_window_width = get(g:, 'fe_window_width', 85)
