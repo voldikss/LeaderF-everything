@@ -31,5 +31,7 @@ let g:fe_window_height = get(g:, 'fe_window_height', 15)
 " Define result window type, either 'split' or 'popup'
 let g:fe_window_type = get(g:, 'fe_window_type', 'split')
 
+let g:fe_default_loc = get(g:, 'fe_default_loc', '')
+
 command! -nargs=1 -bang FE  call fe#StartSearch(<q-args>, <bang>0)
 command! -nargs=0       FET call fe#ToggleDisplay()

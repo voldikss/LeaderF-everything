@@ -48,11 +48,15 @@ function! fe#StartSearch(pattern, filter)
   endif
   " let pattern = s:Handle_String(pattern)
 
-  let dir = input("Search in the location: ", "", "dir")
-  if empty(dir)
-    return
+  if !empty(g:fe_default_loc)
+    let dir = g:fe_default_loc
+  else
+    let dir = input("Search in the location: ", "", "dir")
+    if empty(dir)
+      return
+    endif
   endif
-  let dir = s:Handle_String(dir)
+  let dir = s:Handle_String(g:fe_default_loc)
 
   let cmd = printf('%s %s %s %s', cmd, g:fe_es_options, dir, pattern)
 
