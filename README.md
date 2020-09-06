@@ -38,6 +38,9 @@ let g:fe_window_type = get(g:, 'fe_window_type', 'split')
 
 # Demos
 
+![](https://user-images.githubusercontent.com/20282795/92328733-5e3beb80-f095-11ea-9a0c-80d7dc819bdc.png)
+
+![](https://user-images.githubusercontent.com/20282795/92328735-6005af00-f095-11ea-88e5-f9da2ff3b57f.png)
 
 
 # Credits
