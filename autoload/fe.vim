@@ -31,119 +31,6 @@ function! s:Filter_Everything_Result(result)
   return l:filter_result
 endfunction
 
-"Show_Everything_Result
-function! s:Show_Everything_Result(result)
-  let bname = '_Everything_Search_Result_'
-  " If the window is already open, jump to it
-  let winnr = bufwinnr(bname)
-  if winnr != -1
-    if winnr() != winnr
-      " If not already in the window, jump to it
-      exe winnr . 'wincmd w'
-    endif
-    setlocal modifiable
-    " Delete the contents of the buffer to the black-hole register
-    silent! %delete _
-  else
-    let bufnum = bufnr(bname)
-    if bufnum == -1
-      let wcmd = bname
-    else
-      let wcmd = '+buffer' . bufnum
-    endif
-    exe 'silent! botright ' . g:fe_window_height . 'split ' . wcmd
-  endif
-  " Mark the buffer as scratch
-  setlocal buftype=nofile
-  "setlocal bufhidden=delete
-  setlocal noswapfile
-  setlocal nowrap
-  setlocal nobuflisted
-  setlocal winfixheight
-  setlocal modifiable
-  let winnr = winnr()
-
-  " Create a mapping
-  call s:Map_Keys()
-  " Display the result
-  silent! %delete _
-  silent! 0put =a:result
-
-  " Delete the last blank line
-  silent! $delete _
-  " Move the cursor to the beginning of the file
-  normal! gg
-  setlocal nomodifiable
-endfunction
-
-"Map_Keys
-function! s:Map_Keys()
-  nnoremap <buffer> <silent> <CR>
-    \ :call <SID>Open_Everything_File('filter')<CR>
-  nnoremap <buffer> <silent> <2-LeftMouse>
-    \ :call <SID>Open_Everything_File('external')<CR>
-  nnoremap <buffer> <silent> <C-CR>
-    \ :call <SID>Open_Everything_File('internal')<CR>
-  nnoremap <buffer> <silent> <ESC> :close<CR>
-endfunction
-
-"Open_External
-function! s:Open_External(fname)
-  let cmd = substitute(a:fname,'/',"\\",'g')
-  let cmd = " start \"\" \"" . cmd . "\""
-  call system(cmd)
-endfunction
-
-"Open_Internal
-function! s:Open_Internal(fname)
-  let s:esc_fname_chars = ' *?[{`$%#"|!<>();&' . "'\t\n"
-  let esc_fname = escape(a:fname, s:esc_fname_chars)
-  let winnum = bufwinnr('^' . a:fname . '$')
-  if winnum != -1
-    " Automatically close the window
-    silent! close
-    " If the selected file is already open in one of the windows, jump to it
-    let winnum = bufwinnr('^' . a:fname . '$')
-    if winnum != winnr()
-      exe winnum . 'wincmd w'
-    endif
-  else
-    " Automatically close the window
-    silent! close
-    " Edit the file
-    exe 'edit ' . esc_fname
-  endif
-endfunction
-
-" Open_Filter
-function! s:Open_Filter(fname)
-  let l:filter = g:fe_openfile_filter
-  let current_ext = fnamemodify(a:fname, ":e")
-  for ext in l:filter
-    if ext == current_ext
-      call s:Open_Internal(a:fname)
-      return
-    endif
-  endfor
-  call s:Open_External(a:fname)
-endfunction
-
-" Open_Everything_File
-function! s:Open_Everything_File(mode)
-  let fname = getline('.')
-  if empty(fname)
-    return
-  endif
-
-  if a:mode == 'external'
-    call s:Open_External(fname)
-  elseif a:mode == 'internal'
-    call s:Open_Internal(fname)
-  elseif a:mode == 'filter'
-    call s:Open_Filter(fname)
-  endif
-endfunction
-
 function! fe#StartSearch(pattern, filter)
   if !executable(g:fe_es_exe)
     call fe#util#show_msg('g:fe_es_exe 路径错误!', 'error')
@@ -159,53 +46,67 @@ function! fe#StartSearch(pattern, filter)
       return
     endif
   endif
-  let pattern = s:Handle_String(pattern)
+  " let pattern = s:Handle_String(pattern)
 
   let dir = input("Search in the location: ", "", "dir")
+  if empty(dir)
+    return
+  endif
   let dir = s:Handle_String(dir)
 
   let cmd = printf('%s %s %s %s', cmd, g:fe_es_options, dir, pattern)
 
-  " HACK
-  let l:result = iconv(system(cmd), 'cp936', 'utf-8')
-  if empty(l:result)
+  if exists('*job_start')
+    call job_start(cmd, #{
+      \ out_cb: function('s:On_Out_Or_Exit', [a:filter, 'out']),
+      \ exit_cb: function('s:On_Out_Or_Exit', [a:filter, 'exit']),
+      \ })
+  else
+    let res = system(cmd)
+    call s:On_Out_Or_Exit(a:filter, res)
+  endif
+endfunction
+
+let s:cache = ''
+
+function! s:On_Out_Or_Exit(filter, ...) abort
+  if a:0 == 1
+    let s:cache = a:1
+  elseif a:0 == 3
+    if a:1 == 'out'
+      let s:cache .= a:3
+      let s:cache .= "\n"
+      return
+    elseif a:1 == 'exit'
+    endif
+  else
+    return
+  endif
+
+  " HACK!!!
+  if match($LANG, 'zh') > -1
+    let s:cache = iconv(s:cache, 'cp936', 'utf-8')
+  endif
+  if empty(s:cache)
     call fe#util#show_msg('No files found!', 'error')
     return
   endif
-  if matchstr(l:result, 'Everything IPC window not found, IPC unavailable.') != ""
+  if matchstr(s:cache, 'Everything IPC window not found, IPC unavailable.') != ""
     call fe#util#show_msg('Everything.exe 未运行！', 'error')
     return
   endif
 
   " Filter the results. But it will be very slow if there are huge number of results.
   if a:filter
-    let l:result = s:Filter_Everything_Result(l:result)
+    let s:cache = s:Filter_Everything_Result(s:cache)
   endif
 
   " Show results
-  call s:Show_Everything_Result(l:result)
+  " call s:Show_Everything_Result(s:cache)
+  " return
+  call fe#display#create(s:cache)
 endfunction
 
-function! fe#ToggleResultWindow()
-  let bname = '_Everything_Search_Result_'
-  let winnum = bufwinnr(bname)
-  if winnum != -1
-    if winnr() != winnum
-      " If not already in the window, jump to it
-      exe winnum . 'wincmd w'
-      return
-    else
-      silent! close
-      return
-    endif
-  endif
-
-  let bufnum = bufnr(bname)
-  if bufnum == -1
-    call fe#util#show_msg('No FE results yet!', 'error')
-    let wcmd = bname
-  else
-    let wcmd = '+buffer' . bufnum
-    exe 'silent! botright ' . '15' . 'split ' . wcmd
-  endif
+function! fe#ToggleDisplay()
+  call fe#display#toggle(s:cache)
 endfunction
