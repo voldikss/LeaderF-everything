@@ -11,6 +11,9 @@ Use [everything](https://www.voidtools.com/) in vim.
 # Options
 
 ```vim
+" Define es.exe executable path
+let g:fe_es_exe = get(g:, 'fe_es_exe', 'es.exe')
+
 " Define which file type should be opened with vim when press enter.
 let g:fe_openfile_filter = get(g:, 'fe_openfile_filter', ['txt', 'vim'])
 
