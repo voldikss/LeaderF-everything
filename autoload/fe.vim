@@ -102,8 +102,6 @@ function! s:On_Out_Or_Exit(filter, ...) abort
   endif
 
   " Show results
-  " call s:Show_Everything_Result(s:cache)
-  " return
   call fe#display#create(s:cache)
 endfunction
 
