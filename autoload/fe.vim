@@ -42,9 +42,6 @@ function! fe#StartSearch(pattern, filter)
     let pattern = a:pattern
   else
     let pattern = input("Input pattern: ")
-    if empty(pattern)
-      return
-    endif
   endif
   " let pattern = s:Handle_String(pattern)
 
