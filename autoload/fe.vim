@@ -56,6 +56,7 @@ function! fe#StartSearch(pattern, filter)
   let dir = s:Handle_String(g:fe_default_loc)
 
   let cmd = printf('%s %s %s %s', cmd, g:fe_es_options, dir, pattern)
+  let s:cache = ''
 
   if exists('*job_start')
     call job_start(cmd, #{
