@@ -85,7 +85,8 @@ function! s:On_Out_Or_Exit(filter, ...) abort
   endif
 
   " HACK!!!
-  let s:cache = iconv(s:cache, 'cp936', 'utf-8')
+  let cp = libcallnr('kernel32.dll', 'GetACP', 0)
+  let s:cache = iconv(s:cache, printf('cp%d', cp), &encoding)
   if empty(s:cache)
     call fe#util#show_msg('No files found!', 'error')
     return
