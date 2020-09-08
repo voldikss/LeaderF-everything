@@ -1,52 +1,44 @@
-# vim-find-everything
+# LeaderF-everything
 
-Use [everything](https://www.voidtools.com/) in vim.
+Use [everything.exe](https://www.voidtools.com/) in (neo)vim.
+
+![](https://user-images.githubusercontent.com/20282795/92454117-bfc59c80-f1f2-11ea-8878-66edfb1a6dcb.png)
 
 # Features
 
-- Windows only(?)
-- Asynchronous searching
-- Vim8's popup support
+- Windows only(???)
+- FAST
+
+# Install
+
+```vim
+Plug 'Yggdroot/LeaderF'
+Plug 'voldikss/LeaderF-everything'
+```
+
+# Usage
+
+### `:Leaderf everything [pattern]`
 
 # Options
 
 ```vim
 " Define es.exe executable path
-let g:fe_es_exe = get(g:, 'fe_es_exe', 'es.exe')
+let g:Lf_EverythingEsPath = get(g:, 'Lf_EverythingEsPath', 'es.exe')
 
 " Define which file type should be opened with vim when press enter.
-let g:fe_openfile_filter = get(g:, 'fe_openfile_filter', ['txt', 'vim'])
-
-" Define only show these file types when everything return results.
-let g:fe_result_filter = get(g:, 'fe_result_filter', {'vim':1, 'txt':1, 'c':1, 'h':1, 'py':1})
+let g:Lf_EverythingOpenfileFilter = get(g:, 'Lf_EverythingOpenfileFilter', ['txt', 'vim'])
 
 " Define es.exe option.
-let g:fe_es_options = get(g:, 'fe_es_options', '')
+let g:Lf_EverythingEsOptions = get(g:, 'Lf_EverythingEsOptions', '')
 
-" Define result window width
-let g:fe_window_width = get(g:, 'fe_window_width', 85)
-
-" Define result window height
-let g:fe_window_height = get(g:, 'fe_window_height', 15)
-
-" Define result window type, either 'split' or 'popup'
-let g:fe_window_type = get(g:, 'fe_window_type', 'split')
-
-let g:fe_default_loc = get(g:, 'fe_default_loc', '')
+" Define default search dir, e.g., `D:\`
+let g:Lf_EverythingDefaultDir = get(g:, 'Lf_EverythingDefaultDir', '')
 ```
 
-# Commands
+# To(do|gu)
 
-- `:FE[!] [pattern]`
-
-- `:FET`
-
-# Demos
-
-![](https://user-images.githubusercontent.com/20282795/92328733-5e3beb80-f095-11ea-9a0c-80d7dc819bdc.png)
-
-![](https://user-images.githubusercontent.com/20282795/92328735-6005af00-f095-11ea-88e5-f9da2ff3b57f.png)
-
+- `Everything` on the fly, like `:Leaderf rg`
 
 # Credits
 

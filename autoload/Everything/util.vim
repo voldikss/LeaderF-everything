@@ -20,7 +20,7 @@ function! s:Echon(group, msg) abort
   echohl NONE
 endfunction
 
-function! fe#util#show_msg(message, ...) abort
+function! Everything#util#show_msg(message, ...) abort
   if a:0 == 0
     let msg_type = 'info'
   else
@@ -33,7 +33,7 @@ function! fe#util#show_msg(message, ...) abort
     let message = a:message
   endif
 
-  call s:Echo('Constant', '[vim-find-everything]')
+  call s:Echo('Constant', '[Leaderf-everything]')
 
   if msg_type ==# 'info'
     call s:Echon('Normal', message)
