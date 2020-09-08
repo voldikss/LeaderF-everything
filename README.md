@@ -2,7 +2,7 @@
 
 Use [everything.exe](https://www.voidtools.com/) in (neo)vim.
 
-![](https://user-images.githubusercontent.com/20282795/92454117-bfc59c80-f1f2-11ea-8878-66edfb1a6dcb.png)
+![](https://user-images.githubusercontent.com/20282795/92474145-05dc2980-f20e-11ea-9aec-1b55a7dd5d4f.png)
 
 # Features
 
