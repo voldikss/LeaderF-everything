@@ -44,3 +44,7 @@ let g:Lf_EverythingDefaultDir = get(g:, 'Lf_EverythingDefaultDir', '')
 
 - Thank chao wang for developing [FindEverything](https://www.vim.org/scripts/script.php?script_id=3499)
 - Thank js79903 for sponsoring
+
+# References
+
+- [voldikss/vim-find-everything](https://github.com/voldikss/vim-find-everything)
