@@ -29,7 +29,7 @@ function! Everything#StartSearch(args)
 
   if !executable(g:Lf_EverythingEsPath)
     call Everything#util#show_msg('g:Lf_EverythingEsPath 路径错误!', 'error')
-    return
+    return ['']
   endif
   let cmd = s:Handle_String(g:Lf_EverythingEsPath)
 
@@ -51,11 +51,11 @@ function! Everything#StartSearch(args)
   let res = iconv(res, printf('cp%d', cp), &encoding)
   if empty(res)
     call Everything#util#show_msg('No files found!', 'error')
-    return []
+    return ['']
   endif
   if matchstr(s:cache, 'Everything IPC window not found, IPC unavailable.') != ""
     call Everything#util#show_msg('Everything.exe 未运行！', 'error')
-    return []
+    return ['']
   endif
   return split(res, "\n")
 endfunction
