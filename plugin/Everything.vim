@@ -25,27 +25,29 @@ let g:Lf_EverythingEsOptions = get(g:, 'Lf_EverythingEsOptions', '')
 " Define default search location, e.g., `D:\`
 let g:Lf_EverythingDefaultDir = get(g:, 'Lf_EverythingDefaultDir', '')
 
-let g:Lf_Extensions = {
-  \ "everything": {
-  \     "source": 'Everything#StartSearch',
-  \     "arguments": [
-  \         { "name": ["pattern"], "nargs": '*' },
-  \     ],
-  \     "accept": "Everything#Accept",
-  \     "preview": "Everything#Preview",
-  \     "supports_name_only": 1,
-  \     "get_digest": "Everything#Get_digest",
-  \     "highlights_def": {
-  \         "Lf_hl_grep_file": '^.\{-}\ze\t',
-  \         "Lf_hl_grep_line": '\t|\zs\d\+\ze|\t',
-  \     },
-  \     "highlights_cmd": [
-  \         "hi Lf_hl_grep_file guifg=red ctermfg=196",
-  \         "hi Lf_hl_grep_line guifg=green ctermfg=120",
-  \     ],
-  \     "highlight": "Everything#Highlight",
-  \     "after_enter": "",
-  \     "before_exit": "",
-  \     "supports_multi": 0,
-  \ },
-  \}
+if !exists('g:Lf_Extensions')
+    let g:Lf_Extensions = {}
+endif
+
+let g:Lf_Extensions.everything = {
+  \   "source": 'Everything#StartSearch',
+  \   "arguments": [
+  \       { "name": ["pattern"], "nargs": '*' },
+  \   ],
+  \   "accept": "Everything#Accept",
+  \   "preview": "Everything#Preview",
+  \   "supports_name_only": 1,
+  \   "get_digest": "Everything#Get_digest",
+  \   "highlights_def": {
+  \       "Lf_hl_grep_file": '^.\{-}\ze\t',
+  \       "Lf_hl_grep_line": '\t|\zs\d\+\ze|\t',
+  \   },
+  \   "highlights_cmd": [
+  \       "hi Lf_hl_grep_file guifg=red ctermfg=196",
+  \       "hi Lf_hl_grep_line guifg=green ctermfg=120",
+  \   ],
+  \   "highlight": "Everything#Highlight",
+  \   "after_enter": "",
+  \   "before_exit": "",
+  \   "supports_multi": 0,
+  \ }
