@@ -51,3 +51,7 @@ let g:Lf_Extensions.everything = {
   \   "before_exit": "",
   \   "supports_multi": 0,
   \ }
+
+let g:Lf_SelfContent = get(g:,'Lf_SelfContent', {})
+command! -bar -nargs=0 LeaderfEverything Leaderf everything 
+let g:Lf_SelfContent.LeaderfEverything = "Everything"
