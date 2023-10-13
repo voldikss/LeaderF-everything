@@ -41,9 +41,9 @@ function! Everything#StartSearch(args)
       return
     endif
   endif
-  let dir = s:Handle_String(g:Lf_EverythingDefaultDir)
+  let dir_arg = printf('-path "%s"', dir)
 
-  let cmd = printf('%s %s %s %s', cmd, g:Lf_EverythingEsOptions, dir, pattern)
+  let cmd = printf('%s %s %s %s', cmd, g:Lf_EverythingEsOptions, dir_arg, pattern)
   let s:cache = ''
 
   let res = system(cmd)
